@@ -1316,9 +1316,9 @@ internal object BlossomUpperBodyBuilder {
                 // Graceful curved submental underside flowing organically into the slender cervical neck (ZERO flat chin shelf!)
                 val submentalT = smoothStep(0.840f * PI.toFloat(), 0.985f * PI.toFloat(), theta)
                 if (submentalT > 0.001f) {
-                    val targetNeckX = sinP * 0.320f
+                    val targetNeckX = sinP * 0.370f
                     val targetNeckY = -0.84f - 0.16f * smoothStep(0.89f * PI.toFloat(), 1.0f * PI.toFloat(), theta)
-                    val targetNeckZ = -0.22f + cosP * 0.320f
+                    val targetNeckZ = -0.22f + cosP * 0.370f
                     lx = lx * (1f - submentalT) + targetNeckX * submentalT
                     ly = ly * (1f - submentalT) + targetNeckY * submentalT
                     lz = lz * (1f - submentalT) + targetNeckZ * submentalT
