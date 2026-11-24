@@ -38,7 +38,7 @@ internal object BlossomSdfBodyBuilder {
     private const val MIN_Y = -5.92f
     private const val MAX_Y = 6.32f
     private const val MIN_Z = -2.45f
-    private const val MAX_Z = 2.40f
+    private const val MAX_Z = 2.80f
     private const val STEP = 0.082f
 
     private const val LUT_SIZE = 65
@@ -201,7 +201,7 @@ internal object BlossomSdfBodyBuilder {
         // Hip core H sits cleanly beside lower mons (+0.26), femur sweeps smoothly to crisp knee K,
         // straight tibia descends through shapely calf to slender ankle A & grounded foot!
         val hx = 1.12f; val hy = 0.26f; val hz = -0.22f
-        val kx = 1.80f; val ky = -1.86f; val kz = 1.74f
+        val kx = 1.90f; val ky = -2.19f; val kz = 2.01f
         val axJ = 1.68f; val ayJ = -4.24f; val azJ = -0.94f
 
         // 3A. Femur (Hip -> Knee) with sleek convex organic thigh profile & subtle musculature
@@ -232,9 +232,9 @@ internal object BlossomSdfBodyBuilder {
 
         // 3C. Crisp anatomical knee (patella dome; solid watertight natural popliteal bend with ZERO cutout hole!)
         val dPatella = sdEllipsoid(
-            px = ax - 1.80f,
-            py = y - (-1.90f),
-            pz = z - 1.91f,
+            px = ax - 1.90f,
+            py = y - (-2.23f),
+            pz = z - 2.18f,
             rx = 0.24f,
             ry = 0.26f,
             rz = 0.22f
@@ -252,7 +252,7 @@ internal object BlossomSdfBodyBuilder {
         var rTib = 0.44f - 0.205f * smoothStep(0.14f, 0.96f, hTib) + 0.042f * calfBelly
         if (calfBelly > 0.001f && tDist > 1e-4f) {
             // Posterior unit direction perpendicular to the diagonal tibia bone (smooth, elongated gastrocnemius curve)
-            val postFactor = ((tpy * 0.747f - tpz * 0.664f) / tDist).coerceIn(-1f, 1f)
+            val postFactor = ((tpy * 0.819f - tpz * 0.570f) / tDist).coerceIn(-1f, 1f)
             rTib += max(0f, postFactor) * 0.062f * calfBelly
         }
         val dTibia = tDist - rTib
@@ -437,7 +437,7 @@ internal object BlossomSdfBodyBuilder {
             ax, y, z,
             0f, 4.84f, zNeckBase,
             0f, 5.78f, zNeckTop,
-            0.36f, 0.34f
+            0.42f, 0.39f
         )
         // Delicate subtle sternocleidomastoid (SCM) V-contour framing the anterior throat gently
         if (y in 4.78f..5.68f && ax < 0.52f) {
@@ -640,9 +640,9 @@ internal object BlossomSdfBodyBuilder {
         val ingAo = 1f - 0.08f * ingDip
 
         // Back-of-knee popliteal crease AO
-        val popDx = (ax - 1.76f) / 0.36f
-        val popDy = (y - (-1.82f)) / 0.34f
-        val popDz = (z - 1.28f) / 0.36f
+        val popDx = (ax - 1.86f) / 0.36f
+        val popDy = (y - (-2.15f)) / 0.34f
+        val popDz = (z - 1.55f) / 0.36f
         val popMask = exp(-(popDx * popDx + popDy * popDy + popDz * popDz)) * smoothStep(0.05f, 0.65f, -nz)
         val popAo = 1f - 0.26f * popMask
 
@@ -655,7 +655,7 @@ internal object BlossomSdfBodyBuilder {
 
         val ao = (cushionAo * navelAo * cleftAo * ingAo * popAo * axillaAo * notchAo * supraClavAo * underChinAo * elbowAo).coerceIn(0.14f, 1f)
 
-        val kneeWarm = exp(-(((ax - 1.80f) / 0.42f).let { it * it } + ((y + 1.86f) / 0.42f).let { it * it } + ((z - 1.78f) / 0.42f).let { it * it })) * 0.09f
+        val kneeWarm = exp(-(((ax - 1.90f) / 0.42f).let { it * it } + ((y + 2.19f) / 0.42f).let { it * it } + ((z - 2.05f) / 0.42f).let { it * it })) * 0.09f
         val shoulderWarm = exp(-(((ax - 1.56f) / 0.40f).let { it * it } + ((y - 4.78f) / 0.42f).let { it * it })) * 0.05f
         val toeWarm = smoothStep(-5.15f, -5.65f, y) * 0.09f
         val pigment = (ingDip * 0.08f + exp(-navelR2 * 2.0f) * 0.16f * frontW + kneeWarm + shoulderWarm + toeWarm).coerceIn(0f, 1f)
@@ -1356,9 +1356,9 @@ internal object BlossomSdfBodyBuilder {
         var count = 0
 
         // Femur bone vector in +X half-space (Hip -> Knee)
-        val fdx = 1.80f - HIP_PIVOT_AX
-        val fdy = -1.86f - HIP_PIVOT_Y
-        val fdz = 1.74f - HIP_PIVOT_Z
+        val fdx = 1.90f - HIP_PIVOT_AX
+        val fdy = -2.19f - HIP_PIVOT_Y
+        val fdz = 2.01f - HIP_PIVOT_Z
         val fLen2 = fdx * fdx + fdy * fdy + fdz * fdz
 
         for (i in 0 until bodyMesh.vertexCount) {
